@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from first.views import FirstOne
+from first.views import SecondOne
+from first.views import UsersListCreateView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
+    path('first', FirstOne.as_view()),
+    path('second', SecondOne.as_view()),
+    path('getUser/<int:user_id>', UsersListCreateView.as_view()),
+
 ]
