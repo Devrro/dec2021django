@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin', admin.site.urls),
     path('first', FirstOne.as_view()),
     path('second', SecondOne.as_view()),
+    path('getUser', UsersListCreateView.as_view()),
     path('getUser/<int:user_id>', UsersListCreateView.as_view()),
 
 ]
