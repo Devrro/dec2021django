@@ -61,7 +61,6 @@ class UsersListCreateView(APIView):
         user_storage: list[{}, ...] = []
         with open('././src/storage.json', 'r') as userStorage:
             user_storage = json.load(userStorage)
-            userStorage.close()
         with open('././src/storage.json', 'w') as userStorage:
             user_storage.append(data)
             print(user_storage)
@@ -74,7 +73,6 @@ class UsersListCreateView(APIView):
         user_storage: list[{}, ...] = []
         with open('././src/storage.json', 'r') as userStorage:
             user_storage = json.load(userStorage)
-            userStorage.close()
         if kwargs:
             for i in user_storage:
                 if int(i['user_id']) == int(kwargs['user_id']):
