@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from first.views import ComputerView
+from django.urls import include
+from apps.pc_shop.views import PcModelView, PcReadUpdateDestroy
+
 urlpatterns = [
     path('admin', admin.site.urls),
-    path('computers', ComputerView.as_view()),
+    path('pc', include('apps.pc_shop.urls'))
 
 ]
