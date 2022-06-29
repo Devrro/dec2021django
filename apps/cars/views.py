@@ -1,4 +1,5 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.views import APIView
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.response import Response
 
@@ -11,21 +12,19 @@ class CarListCreateView(ListCreateAPIView):
     queryset = CarModel.objects.all()
     serializer_class = CarSerializer
 
-    # def get_queryset(self):
-    #     pk = self.request.query_params.get('pk')
-    #     print(pk)
-    #     if id:
-    #         return self.queryset.filter(pk=pk)
-    #     return super().get_queryset()
-    #
-    # def get(self, *args, **kwargs):
-    #     # car = self.get_object()
-    #     # serializer = self.serializer_class(car, many=True)
-    #     return super().list(self.request, *args, **kwargs)
-    #
-    # def post(self, *args, **kwargs):
-    #     return super().create(self.request, *args, **kwargs)
+    def get_queryset(self):
+        qs = self.queryset.all()
+        auto_park_id = self.request.query_params.get('auto_park_id')
+        if auto_park_id:
+            qs.filter(auto_parks_id=auto_park_id)
+        return super().get_queryset()
 
+class GetAll(APIView):
+
+    def get(self, *args,**kwargs):
+        car = CarModel.objects.all()
+        serializer = CarSerializer(car,many=True)
+        return Response()
 
 class CarUpdateReadDeleteByIdView(RetrieveUpdateDestroyAPIView):
     queryset = CarModel.objects.all()
