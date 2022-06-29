@@ -1,6 +1,8 @@
 from rest_framework.serializers import ModelSerializer
+from .models import CarModel
 
 
 class CarSerializer(ModelSerializer):
-
-    fields = ('id','car_name','car_series','price','year','car_payload')
+    class Meta:
+        model = CarModel
+        fields = ('id', 'brand', 'car_name', 'car_series', 'price', 'year', 'created_at', 'updated_at')
