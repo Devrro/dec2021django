@@ -1,22 +1,26 @@
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import IsAuthenticated
 
-
-# Create your views here.
 from .models import CarModel
 from .serializer import CarSerializer
+
+# Create your views here.
 
 
 class CarListCreateView(ListCreateAPIView):
     serializer_class = CarSerializer
     queryset = CarModel.objects.all()
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
+        print(self.request.user.id)
         qs = self.queryset.all()
         auto_park_id = self.request.query_params.get('autoParkId')
         if auto_park_id:
             qs = qs.filter(auto_parks_id=auto_park_id)
             print(qs.query)
         return qs
+
 
 # class GetAll(APIView):
 #
@@ -36,4 +40,3 @@ class CarUpdateReadDeleteByIdView(RetrieveUpdateDestroyAPIView):
         if auto_park_id:
             qs.filter(auto_parks_id=auto_park_id)
         return qs
-
