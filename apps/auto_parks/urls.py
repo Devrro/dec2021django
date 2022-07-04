@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import AutoParkView,AutoParkCreateView,AutoParkRetrieveDestroy
+from .views import AutoParkCreateView, AutoParkRetrieveDestroy, AutoParkView
+
 urlpatterns = [
     path('', AutoParkView.as_view()),
     path('/<int:pk>', AutoParkRetrieveDestroy.as_view()),
