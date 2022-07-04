@@ -1,8 +1,12 @@
+from django.contrib.auth import get_user_model
+from django.core.validators import MaxLengthValidator, MaxValueValidator, MinLengthValidator, MinValueValidator
 from django.db import models
-from django.core.validators import MaxLengthValidator, MinLengthValidator, MinValueValidator, MaxValueValidator
+
 from apps.auto_parks.models import AutoParksModel
 
 # Create your models here.
+
+UserModel = get_user_model()
 
 
 class CarModel(models.Model):
@@ -26,9 +30,9 @@ class CarModel(models.Model):
         MaxValueValidator(10000),
         MinValueValidator(10),
     ]),
-
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+    user_id = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='users')
 
     def __str__(self):
         return self.car_name,self.car_series
