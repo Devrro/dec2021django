@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator, RegexValidator
 from django.db import models
 
 from apps.auto_parks.models import AutoParksModel
 
+from .enums import RegEx
 from .manager import CarManager
 
 # Create your models here.
@@ -12,9 +13,9 @@ UserModel = get_user_model()
 class CarModel(models.Model):
     class Meta:
         db_table = 'cars'
-    brand = models.CharField(max_length=10)
-    car_name = models.CharField(max_length=20, blank=True)
-    car_series = models.CharField(max_length=20)
+    brand = models.CharField(max_length=10,validators=[RegexValidator(RegEx.NAME.pattern,RegEx.NAME.msg)])
+    car_name = models.CharField(max_length=20, blank=True,validators=[RegexValidator(RegEx.NAME.pattern,RegEx.NAME.msg)])
+    car_series = models.CharField(max_length=20,validators=[RegexValidator(RegEx.NAME.pattern,RegEx.NAME.msg)])
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE,related_name='auth_user')
     auto_parks = models.ForeignKey(AutoParksModel, on_delete=models.CASCADE, related_name='cars')
 
