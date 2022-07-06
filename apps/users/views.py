@@ -22,16 +22,25 @@ class UpdatePermissionView(UpdateAPIView):
     permission_classes = (IsSuperUser,)
 
     def patch(self, request, *args, **kwargs):
-
-        instance = self.get_object()
         data = self.request.data
-        serializer = self.serializer_class(instance, data=data, partial=True)
+        user_id = kwargs.get('pk')
+        if not UserModel.objects.filter(pk=user_id).exists():
+            return Response("User not found")
+
+        user = UserModel.objects.get(pk=user_id)
+        serializer = self.serializer_class(user,data,partial=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return super().patch(request, *args, **kwargs)
-            # return Response(serializer.data)
-        else:
-            return Response("Can`t update user permission")
+        return super().patch(request, *args, **kwargs)
+
+        # data = self.request.data
+        # serializer = self.serializer_class(instance, data=data, partial=True)
+        # if serializer.is_valid(raise_exception=True):
+        #     serializer.save()
+        #     # return super().patch(request, *args, **kwargs)
+        #     return Response(serializer.data)
+        # else:
+        #     return Response("Can`t update user permission")
 
 
 
