@@ -3,7 +3,7 @@ from typing import Type
 from django.contrib.auth import get_user_model
 from django.db import transaction
 
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ValidationError
 
 from .models import ProfileModel, UserModel
 
@@ -16,6 +16,12 @@ class ProfileSerializer(ModelSerializer):
         exclude = ('user',)
 
 
+class AvatarSerializer(ModelSerializer):
+    class Meta:
+        model = ProfileModel
+        fields = ('avatar',)
+
+
 class UserSerializer(ModelSerializer):
     profile = ProfileSerializer()
 
@@ -26,7 +32,20 @@ class UserSerializer(ModelSerializer):
             'updated_at')
         read_only_fields = (
             'id', 'is_staff', 'is_superuser', 'is_active', 'last_login', 'profile', 'created_at', 'updated_at')
+
         extra_kwargs = {'password': {'write_only': True}}
+
+    def validate(self, attrs):
+        email = attrs['email']
+        password = attrs['password']
+        if email == password:
+            raise ValidationError(f'email cant be equal to password')
+        return super().validate(attrs)
+
+    def validate_profile(self, value):
+        name = value['name']
+        if name.lower() == 'felix':
+            raise ValidationError('Name can`t be felix')
 
     @transaction.atomic
     def create(self, validated_data: dict):

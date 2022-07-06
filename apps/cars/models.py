@@ -4,6 +4,8 @@ from django.db import models
 
 from apps.auto_parks.models import AutoParksModel
 
+from .manager import CarManager
+
 # Create your models here.
 UserModel = get_user_model()
 
@@ -31,6 +33,6 @@ class CarModel(models.Model):
 
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
-
+    objects = CarManager()
     def __str__(self):
         return self.car_name,self.car_series

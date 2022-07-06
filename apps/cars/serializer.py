@@ -16,7 +16,6 @@ class CarSerializer(ModelSerializer):
             'created_at',
             'updated_at',
             'auto_parks',
-            'user',
+            'user_id'
         )
-        extra_kwargs = {'user': {'write_only': True}}
 
