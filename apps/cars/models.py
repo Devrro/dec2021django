@@ -13,7 +13,7 @@ class CarModel(models.Model):
     class Meta:
         db_table = 'cars'
     brand = models.CharField(max_length=10)
-    car_name = models.CharField(max_length=20)
+    car_name = models.CharField(max_length=20, blank=True)
     car_series = models.CharField(max_length=20)
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE,related_name='auth_user')
     auto_parks = models.ForeignKey(AutoParksModel, on_delete=models.CASCADE, related_name='cars')
@@ -33,6 +33,7 @@ class CarModel(models.Model):
 
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateField(auto_now=True)
+    used_car = models.BooleanField(default=False)
     objects = CarManager()
     def __str__(self):
         return self.car_name,self.car_series

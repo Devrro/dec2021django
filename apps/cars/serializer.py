@@ -16,6 +16,7 @@ class CarSerializer(ModelSerializer):
             'created_at',
             'updated_at',
             'auto_parks',
-            'user_id'
+            'used_car',
+            'user_id',
         )
 

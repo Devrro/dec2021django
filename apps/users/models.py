@@ -4,6 +4,7 @@ from django.db import models
 
 from .enums import RegEx
 from .managers import UserManager
+from .services import upload_to
 
 
 # Create your models here.
@@ -22,9 +23,6 @@ class UserModel(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     objects = UserManager()
-
-
-from .services import upload_to
 
 
 class ProfileModel(models.Model):

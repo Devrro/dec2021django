@@ -47,6 +47,7 @@ class CarUpdateReadDeleteByIdView(RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         qs = self.queryset.all()
+
         auto_park_id = self.request.query_params.get('auto_park_id')
         if auto_park_id:
             qs.filter(auto_parks_id=auto_park_id)

@@ -22,6 +22,11 @@ class AvatarSerializer(ModelSerializer):
         fields = ('avatar',)
 
 
+class PermissionSerializer(ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ('is_staff',)
+
 class UserSerializer(ModelSerializer):
     profile = ProfileSerializer()
 
@@ -36,9 +41,9 @@ class UserSerializer(ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate(self, attrs):
-        email = attrs['email']
-        password = attrs['password']
-        if email == password:
+        email = attrs.get('email')
+        password = attrs.get('password')
+        if email == password and email is not None:
             raise ValidationError(f'email cant be equal to password')
         return super().validate(attrs)
 
