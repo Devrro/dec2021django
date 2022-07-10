@@ -2,9 +2,8 @@ from django.contrib.auth import get_user_model
 
 from rest_framework.generics import ListCreateAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny,IsAuthenticated
-from rest_framework.response import Response
-from permissions.user_permissions import IsSuperUser
-from .serializer import AvatarSerializer, UserSerializer, PermissionSerializer
+from core.permissions.user_permissions import IsSuperUser
+from .serializer import AvatarSerializer, UserSerializer
 
 # Create your views here.
 
@@ -18,12 +17,18 @@ class UserListCreateView(ListCreateAPIView):
 
 
 class UpdatePermissionView(UpdateAPIView):
-    serializer_class = PermissionSerializer
+    serializer_class = UserSerializer
     queryset = UserModel.objects.all()
     permission_classes = (IsSuperUser,)
 
+    def patch(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        user = UserModel.objects.get(pk=pk)
+        user.is_staff = False
+        user.save()
+        return super().patch(request, *args, **kwargs)
 
-        # data = self.request.data
+    # data = self.request.data
         # user_id = kwargs.get('pk')
         # qs = self.queryset.filter(id=user_id).first()
         # print(self.get_object())

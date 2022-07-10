@@ -6,7 +6,6 @@ from .models import CarModel
 from .serializer import CarSerializer
 
 # Create your views here.
-from permissions.user_permissions import IsSuperUser
 
 class CarListCreateView(ListCreateAPIView):
     serializer_class = CarSerializer
