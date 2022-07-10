@@ -15,5 +15,3 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'configs.settings')
 
 application = get_wsgi_application()
 
-os.environ['http_proxy'] = "http://192.168.1.5:8080"
-os.environ['https_proxy'] = "http://192.168.1.5:8080"
