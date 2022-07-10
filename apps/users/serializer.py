@@ -2,7 +2,7 @@ import os
 from typing import Type
 
 from django.contrib.auth import get_user_model
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, get_connection
 from django.db import transaction
 from django.template.loader import get_template
 
@@ -62,10 +62,13 @@ class UserSerializer(ModelSerializer):
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(**profile, user=user)
-
+        em = os.environ.get('EMAIL_HOST_USER')
+        print(em)
+        print(user.email)
         template = get_template('email_template.html')
-        html_content = template.render()
+        html_content = template.render({'name': user.profile.name})
         mail = EmailMultiAlternatives('Register', from_email=os.environ.get('EMAIL_HOST_USER'), to=[user.email])
+        # mail = EmailMultiAlternatives('Register', from_email=os.environ.get('EMAIL_HOST_USER'), to=[user.email])
         mail.attach_alternative(html_content, r'text/html')
         mail.send()
         return user
