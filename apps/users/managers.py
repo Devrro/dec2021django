@@ -4,6 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager
 class UserManager(BaseUserManager):
 
     def create_user(self, email, password, **extra_kwargs):
+        print(email,password, extra_kwargs)
         if not email:
             raise ValueError('The email is not valid')
         email = self.normalize_email(email)
