@@ -41,21 +41,20 @@ class UserSerializer(ModelSerializer):
 
         extra_kwargs = {'password': {'write_only': True}}
 
-    def validate(self, attrs):
-        email = attrs.get('email')
-        password = attrs.get('password')
-        if email == password and email is not None:
-            raise ValidationError(f'email cant be equal to password')
-        return super().validate(attrs)
-
-    def validate_profile(self, value):
-        name = value['name']
-        if name.lower() == 'felix':
-            raise ValidationError('Name can`t be felix')
+    # def validate(self, attrs):
+    #     email = attrs.get('email')
+    #     password = attrs.get('password')
+    #     if email == password and email is not None:
+    #         raise ValidationError(f'email cant be equal to password')
+    #     return super().validate(attrs)
+    #
+    # def validate_profile(self, value):
+    #     name = value['name']
+    #     if name.lower() == 'felix':
+    #         raise ValidationError('Name can`t be felix')
 
     @transaction.atomic
-    def create(self, validated_data: dict):
-        print(validated_data)
+    def create(self, validated_data):
         profile = validated_data.pop('profile')
         user = UserModel.objects.create_user(**validated_data)
         ProfileModel.objects.create(**profile, user=user)

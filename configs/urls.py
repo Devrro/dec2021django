@@ -25,6 +25,7 @@ urlpatterns = [
     path('auto_parks', include('apps.auto_parks.urls')),
     path('users', include('apps.users.urls')),
     path('auth', include('apps.auth.urls')),
+    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
