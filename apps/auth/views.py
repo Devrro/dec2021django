@@ -23,7 +23,6 @@ class ResetUserPasswordView(GenericAPIView):
     permission_classes = (AllowAny,)
 
     def post(self, *args, **kwargs):
-        # client sending email
         data = self.request.data.get('email')
         try:
             user = UserModel.objects.get(email=data)
