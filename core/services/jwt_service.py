@@ -1,9 +1,11 @@
-from rest_framework_simplejwt.tokens import Token, BlacklistMixin
+from django.contrib.auth import get_user_model
+
+from rest_framework.generics import get_object_or_404
+
+from rest_framework_simplejwt.tokens import BlacklistMixin, Token
 
 from core.enums.action_enum import ActionEnum
 from core.exceptions import JwtException
-from rest_framework.generics import get_object_or_404
-from django.contrib.auth import get_user_model
 
 UserModel = get_user_model()
 
@@ -14,7 +16,7 @@ class ActivateToken(BlacklistMixin, Token):
     lifetime = ActionEnum.ACTIVATE.exp_time
 
 
-class ResetPasswordToken(BlacklistMixin, Token):
+class ResetPasswordToken(ActivateToken):
 
     token_type = ActionEnum.RESET.token_type
     lifetime = ActionEnum.RESET.exp_time
