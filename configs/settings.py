@@ -28,6 +28,8 @@ DEBUG = True if os.environ.get('DEBUG') == 'True' else False
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000",
     "http://localhost:4200",
+    "https://localhost:4200",
+    "https://localhost:4200",
 ]
 ALLOWED_HOSTS = []
 

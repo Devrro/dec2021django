@@ -13,6 +13,7 @@ from apps.users.serializer import UserSerializer
 from .serializers import EmailSerializer, UserPasswordSerializer
 
 UserModel = get_user_model()
+from core.services.jwt_service import ActivateToken, ResetPasswordToken
 
 
 class ActivateUserView(GenericAPIView):
@@ -20,7 +21,7 @@ class ActivateUserView(GenericAPIView):
 
     def get(self, *args, **kwargs):
         token = kwargs.get('token')
-        user = JwtService.validate_token(token)
+        user = JwtService.validate_token(token, ActivateToken)
         user.is_active = True
         user.save()
         return Response(status=status.HTTP_200_OK)
@@ -44,9 +45,9 @@ class ConfirmResettingPassword(GenericAPIView):
 
     def post(self, *args, **kwargs):
         token = kwargs.get('token')
-        user = JwtService.validate_reset_token(token)
+        user = JwtService.create_token(token, ResetPasswordToken)
         password = self.request.data.get("password")
-        serializer = UserPasswordSerializer(data={'password': password} )
+        serializer = UserPasswordSerializer(data={'password': password})
         if serializer.is_valid(raise_exception=True):
             user.set_password(password)
             user.save()
